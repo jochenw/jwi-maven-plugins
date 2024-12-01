@@ -21,6 +21,10 @@
   <artifactId>jwi-maven-plugins</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>JWI Maven Plugins</name>
+  <url>https://github.com/jochenw/jwi-maven-plugins</url>
+  <description>Jochen Wiedmann's Maven plugins, a collection of small, simple, and (hopefully)
+reliable Maven plugins.</description>
   <licenses>
     <license>
       <name>Apache-2.0</name>
