@@ -21,9 +21,12 @@ package com.github.jochenw.jmp.jwigrv;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +39,11 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 
 	@Test
 	void testSimpleRun() throws Exception {
-		final File pom = requireTestPom("simple-run");
+		doTest("simple-run", "Hello, world!\n");
+	}
+
+	private void doTest(String pTestId, String pExpectedOutput) throws Exception, MojoExecutionException, MojoFailureException, UnsupportedEncodingException {
+		final File pom = requireTestPom(pTestId);
 		final JwiGrvMojo mojo;
 		try {
 			mojo = (JwiGrvMojo) lookupMojo("run", pom);
@@ -54,10 +61,22 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 			System.setOut(savedSystemOut);
 		}
 		final String actualOutput = baos.toString("UTF-8");
-		final String expectedOutput = "Hello, world!\n".replace("\n", System.lineSeparator());
+		final String expectedOutput = pExpectedOutput.replace("\n", System.lineSeparator());
 		Assertions.assertEquals(expectedOutput, actualOutput);
 	}
 
+	@Test
+	void testSkippedRun() throws Exception {
+		doTest("skipped-run", "[INFO] Skipping execution, because 'skip' parameter is true.\n");
+	}
+
+	@Test
+	void testVariables() throws Exception {
+		final String expectedOutput = "Hello, world!\n"
+				+ "userName=Doe, John\n"
+				+ "userEmail=john.doe@company.com\n";
+		doTest("variables", expectedOutput);
+	}
 	private File requireTestPom(String pTestId) {
 		final Path testDir = Paths.get("src/test/resources/com/github/jochenw/jmp/jwigrv/junit/" + pTestId);
 		final File pom = testDir.resolve("pom.xml").toFile();

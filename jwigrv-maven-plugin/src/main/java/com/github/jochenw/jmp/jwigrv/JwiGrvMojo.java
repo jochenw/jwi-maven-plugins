@@ -38,10 +38,10 @@ import groovy.lang.Script;
 
 @Mojo(name="run")
 public class JwiGrvMojo extends AbstractMojo {
-	@Parameter(property="jmpg.skip", defaultValue="false") 
+	@Parameter(property="jwigrv.skip", defaultValue="false") 
 	private boolean skip;
 
-	@Parameter(property="jmpg.script", required=true)
+	@Parameter(property="jwigrv.script", required=true)
 	private String scriptFile;
 
 	@Parameter
@@ -94,6 +94,7 @@ public class JwiGrvMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (skip) {
 			getLog().info("Skipping execution, because 'skip' parameter is true.");
+			return;
 		}
 		final Path scriptFile = getScriptFile();
 		final GroovyShell gsh = new GroovyShell();
