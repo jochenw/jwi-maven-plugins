@@ -19,7 +19,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.jochenw.jmp</groupId>
   <artifactId>jwi-maven-plugins</artifactId>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>JWI Maven Plugins</name>
   <url>https://github.com/jochenw/jwi-maven-plugins</url>
@@ -196,6 +196,6 @@ reliable Maven plugins.</description>
     <connection>scm:git:https://github.com/jochenw/jwi-maven-plugins.git</connection>
 	<developerConnection>scm:git:git@github.com:jochenw/jwi-maven-plugins.git</developerConnection>
 	<url>https://github.com/jochenw/jwi-maven-plugins</url>
-    <tag>jwi-maven-plugins-0.2</tag>
+    <tag>jwi-maven-plugins-0.1</tag>
   </scm>
 </project>
