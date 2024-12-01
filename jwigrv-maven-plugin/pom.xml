@@ -24,7 +24,7 @@
   </parent>
   <artifactId>jwigrv-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>jwigrv-maven-plugin</name>
+  <name>JWI Groovy Maven plugin</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -67,4 +67,6 @@
       <version>3.9.9</version>
     </dependency>
   </dependencies>
+  <description>A Maven plugin for running a Groovy script as part of your
+Maven build.</description>
 </project>
