@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.github.jochenw.jmp</groupId>
     <artifactId>jwi-maven-plugins</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>jwigrv-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
