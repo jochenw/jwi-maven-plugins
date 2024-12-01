@@ -24,6 +24,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Consumer;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -43,13 +44,17 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 	}
 
 	private void doTest(String pTestId, String pExpectedOutput) throws Exception, MojoExecutionException, MojoFailureException, UnsupportedEncodingException {
+		doTest(pTestId, pExpectedOutput, null);
+	}
+
+	private void doTest(String pTestId, String pExpectedOutput, Consumer<Throwable> pErrorValidator) throws Exception, MojoExecutionException, MojoFailureException, UnsupportedEncodingException {
 		final File pom = requireTestPom(pTestId);
 		final JwiGrvMojo mojo;
 		try {
 			mojo = (JwiGrvMojo) lookupMojo("run", pom);
-		} catch (RuntimeException rte) {
-			rte.printStackTrace(System.err);
-			throw rte;
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			throw e;
 		}
 		assertNotNull(mojo);
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -57,12 +62,23 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 		try {
 			System.setOut(new PrintStream(baos));
 			mojo.execute();
+			if (pErrorValidator != null) {
+				Assertions.fail("Expected Exception");
+			}
+		} catch (MojoExecutionException|MojoFailureException e) {
+			if (pErrorValidator != null) {
+				pErrorValidator.accept(e);
+				return;
+			}
+			throw e;
 		} finally {
 			System.setOut(savedSystemOut);
 		}
-		final String actualOutput = baos.toString("UTF-8");
-		final String expectedOutput = pExpectedOutput.replace("\n", System.lineSeparator());
-		Assertions.assertEquals(expectedOutput, actualOutput);
+		if (pExpectedOutput != null) {
+			final String actualOutput = baos.toString("UTF-8");
+			final String expectedOutput = pExpectedOutput.replace("\n", System.lineSeparator());
+			Assertions.assertEquals(expectedOutput, actualOutput);
+		}
 	}
 
 	@Test
@@ -77,6 +93,15 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 				+ "userEmail=john.doe@company.com\n";
 		doTest("variables", expectedOutput);
 	}
+
+	@Test
+	void testSyntaxError() throws Exception {
+		doTest("syntax-error", null, (t) -> {
+			assertTrue(t instanceof MojoExecutionException);
+			assertTrue(t.getMessage().contains("Unexpected character: '\"' @ line 21, column 21."));
+		});
+	}
+
 	private File requireTestPom(String pTestId) {
 		final Path testDir = Paths.get("src/test/resources/com/github/jochenw/jmp/jwigrv/junit/" + pTestId);
 		final File pom = testDir.resolve("pom.xml").toFile();

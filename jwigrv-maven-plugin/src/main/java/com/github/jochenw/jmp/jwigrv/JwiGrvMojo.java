@@ -31,6 +31,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -101,6 +103,9 @@ public class JwiGrvMojo extends AbstractMojo {
 		final Script script;
 		try {
 			script = gsh.parse(scriptFile.toFile());
+		} catch (CompilationFailedException cfe) {
+			getLog().error("Compilation of Groovy script failed: " + cfe.getMessage());
+			throw new MojoExecutionException(cfe);
 		} catch (IOException ioe) {
 			throw new MojoExecutionException("Failed to compile script file: " + scriptFile + ": " + ioe.getMessage(), ioe);
 		}
