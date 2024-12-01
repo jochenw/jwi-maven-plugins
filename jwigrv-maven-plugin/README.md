@@ -16,7 +16,7 @@ be trivial to solve, if I could run a Groovy script, or the like, within the Mav
 To use the plugin, have a section like the following in your POM. The purpose of the example is to have the
 Groovy script *src/main/build/myGroovyScript.groovy* executed within the *generate-resources* phase.
 
-``` XML
+```XML
   <build>
     <plugins>
       <plugin>
@@ -48,29 +48,14 @@ The above example specifies, that two variables should be available within the s
 - A variable named **userName** with the value *Doe, John*.
 - Another variable named **userEmail** with the value *john.doe@company.com*.
 
-In other words, the Groovy interpreter would evaluate the string
-
-```
-"Commit as ${userName} with email ${userEmail}."
-```
-
-to
-
-```
-"Commit as Doe, John with email john.doe@company.com."
-```
+In other words, the Groovy interpreter would evaluate the string `"Commit as {userName} with email {userEmail}."`to `"Commit as Doe, John with email john.doe@company.com."`
 
 The variables we have seen so far, are explicitly specified in the Maven POM. In addition to explicitly specified
 variables, there are also a few implicitly specified:
 
-| Name | Description |
-| ---- | ----------- |
-| log  | The JWI Groovy Maven plugins [logger](https://maven.apache.org/ref/3.9.9/maven-plugin-api/apidocs/org/apache/maven/plugin/logging/Log.html). In other words, by using this logger, the script can send messages to the Maven console. |
-| project | The [Maven project object](https://maven.apache.org/ref/3.9.9/apidocs/org/apache/maven/project/MavenProject.html).
-            Note, that this is a complex, and deeply structured object. For example, the path of the build directory
-            (typically *target*) is available here as **project.build.directory**. Likewise, the path of the Java output
-            directory (typically *target/classes*) can be accessed via **project.build.outputDirectory**. In particular,
-            the projects Maven coordinates are here as **project.groupId**, **project.artifactId**, and **project.version**. |
+| Name    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| log     | The JWI Groovy Maven plugins [logger](https://maven.apache.org/ref/3.9.9/maven-plugin-api/apidocs/org/apache/maven/plugin/logging/Log.html). In other words, by using this logger, the script can send messages to the Maven console.                                                                                                                                                                                                                                                                                                                                                |
+| project | The [Maven project object](https://maven.apache.org/ref/3.9.9/apidocs/org/apache/maven/project/MavenProject.html). Note, that this is a complex, and deeply structured object. For example, the path of the build directory (typically *target*) is available here as **project.build.directory**. Likewise, the path of the Java output directory (typically *target/classes*) can be accessed via **project.build.outputDirectory**.<br/>In particular, the projects Maven coordinates are available here as **project.groupId**, **project.artifactId**, and **project.version**. |
 
-            could be accessed via
-
+            
