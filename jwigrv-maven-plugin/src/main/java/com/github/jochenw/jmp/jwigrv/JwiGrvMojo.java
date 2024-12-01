@@ -49,7 +49,7 @@ public class JwiGrvMojo extends AbstractMojo {
 	@Parameter
 	private Map<String,String> scriptProperties;
 
-	@Parameter
+	@Parameter(defaultValue="${project}", readonly=true, required=true)
 	private MavenProject project;
 
 	protected Path getScriptFile() throws MojoFailureException {
@@ -70,6 +70,7 @@ public class JwiGrvMojo extends AbstractMojo {
 			}
 		} else {
 			baseDir = project.getBasedir();
+			getLog().info("JwiGrvMojo: project.basedir=" + baseDir);
 		}
 		final Path scriptFilePath;
 		if (baseDir == null) {
