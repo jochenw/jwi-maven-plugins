@@ -70,7 +70,6 @@ public class JwiGrvMojo extends AbstractMojo {
 			}
 		} else {
 			baseDir = project.getBasedir();
-			getLog().info("JwiGrvMojo: project.basedir=" + baseDir);
 		}
 		final Path scriptFilePath;
 		if (baseDir == null) {
