@@ -112,12 +112,25 @@ public class JwiGrvMojo extends AbstractMojo {
 		final Binding binding = new Binding();
 		binding.setProperty("log", getLog());
 		if (scriptProperties != null) {
-			scriptProperties.forEach((k,v) -> binding.setProperty(k, v));
+			scriptProperties.forEach((k,v) -> {
+				final String kLc = k.toLowerCase();
+				final boolean passwordProperty = kLc.contains("password") || kLc.contains("pwd");
+				final String loggedValue = passwordProperty ? v : "<Password_Not_Logged>";
+				getLog().debug("Setting script property: " + k + "=" + loggedValue);
+				binding.setProperty(k, v);
+			});
 		}
 		if (project != null) {
 			binding.setProperty("project", project);
 		}
 		script.setBinding(binding);
-		script.run();
+		try {
+			script.run();
+		} catch (Throwable t) {
+			getLog().error("Error while executing script " + this.scriptFile + ": "
+					+ t.getClass().getSimpleName() + ", " + t.getMessage());
+			getLog().error("Use Maven's -e switch to see error details.");
+			throw new MojoFailureException(t);
+		}
 	}
 }

@@ -102,6 +102,16 @@ class JwiGrvMojoTest extends AbstractMojoTestCase {
 		});
 	}
 
+	@Test
+	void testRuntimeError() throws Exception {
+		doTest("runtime-error", null, (t) -> {
+			assertTrue(t instanceof MojoFailureException);
+			final Throwable cause = t.getCause();
+			assertNotNull(cause);
+			assertTrue(cause instanceof IllegalStateException);
+			assertEquals("Expected failure", cause.getMessage());
+		});
+	}
 	private File requireTestPom(String pTestId) {
 		final Path testDir = Paths.get("src/test/resources/com/github/jochenw/jmp/jwigrv/junit/" + pTestId);
 		final File pom = testDir.resolve("pom.xml").toFile();

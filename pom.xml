@@ -37,7 +37,11 @@ reliable Maven plugins.</description>
     <defaultGoal>clean install</defaultGoal>
     <pluginManagement>
       <plugins>
-        <!-- maven-surefire-plugin, maven-jar-plugin, maven-install-plugin-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
