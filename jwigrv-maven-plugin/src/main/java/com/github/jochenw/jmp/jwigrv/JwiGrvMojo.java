@@ -32,7 +32,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
